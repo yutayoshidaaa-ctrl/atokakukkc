@@ -17,12 +17,15 @@
       --ok: #166534;
     }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+body {
+  margin: 0;
+  font-family: ...
+  background: var(--bg);
+  color: var(--text);
+
+  height: 100vh;        ←追加
+  overflow: hidden;     ←追加（全体スクロール禁止）
+}
     .wrap {
       max-width: 1400px;
       margin: 0 auto;
