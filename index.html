@@ -647,30 +647,35 @@ ${checked('gasIncluded') ? '\n【ガス付帯ある場合共通】\nまた〇〇
       const op = v('opType');
       const feeLine = hasOfficeFee() ? '【事務手数料は（税込）3,850円となり、１地点毎ごとに掛かります。】' : '【プランにより事務手数料案内不要】';
       let extra = '';
+
       if (gasIncluded && !checked('otokugas')) {
-        extra += '【ガスもセットの場合】
+        extra += `【ガスもセットの場合】
 ※おトクガスの場合⇒セット・単体の2パターンどちらであってもガスの事務手数料の概念はない為案内不要
 
-';
+`;
       }
+
       if (op === 'long_term_discount') {
-        extra += '【長期割オプション付帯の場合】
+        extra += `【長期割オプション付帯の場合】
 長期割オプションを途中解約されますと、最大「12ヶ月分の基本料金」+「電気契約の違約金」がキャンセル料として発生いたしますのでご了承くださいませ。1年未満での解約は「利用された月数分の基本料金」+「電気契約の違約金」となります。
 ※違約金が発生しないのは最短72か月目（6年目）となります。
 
-';
+`;
       }
+
       if (op === 'furusato_12' || op === 'furusato_sai_nagomi') {
-        extra += '【ふるさと〇〇プランの場合】
+        extra += `【ふるさと〇〇プランの場合】
 プランを更新月外で解約されますと、5年ごとの「契約期間中における実質値引き額」+「電気契約の違約金」がキャンセル料として発生いたしますのでご了承くださいませ。
 
-';
+`;
       }
+
       if (op === 'special_discount') {
-        extra += '【特別追加（月額）割引付帯に伴う契約解除料】
+        extra += `【特別追加（月額）割引付帯に伴う契約解除料】
 特別追加（月額）割引が付帯されておりますので、更新月以外でやめる場合、電気の違約金とは別に、（不課税）6,000円の料金が発生いたします。
-';
+`;
       }
+
       return `${buildContractYearsText()}
 ****（注意）事務手数料がかかるプランの確認****
 ${feeLine}
@@ -804,7 +809,9 @@ ${extra || '追加の違約金案内はありません。'}`;
       document.getElementById('contractYears').value = '5';
       document.getElementById('contractYearsMode').value = 'single';
       document.getElementById('furusatoMonths').value = '3';
+      document.addEventListener('DOMContentLoaded', () => {
       renderScript();
+    });
     }
 
     renderScript();
