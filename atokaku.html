@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>地域創生HD KKCトークスクリプトアプリ</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --card: #ffffff;
+      --line: #d8deea;
+      --text: #1f2937;
+      --sub: #6b7280;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --warn: #b91c1c;
+      --ok: #166534;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+    .lead {
+      margin: 0 0 20px;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .panel, .script-area {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .panel {
+      padding: 18px;
+      position: sticky;
+      top: 16px;
+    }
+    .script-area {
+      padding: 20px;
+    }
+    .group {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #eef2f7;
+    }
+    .group:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .group h2 {
+      font-size: 16px;
+      margin: 0 0 10px;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 10px 0 6px;
+    }
+    select, input[type="text"], input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+    .inline-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .inline-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    button {
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #475569;
+    }
+    button.light {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .section {
+      margin-bottom: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .section-header {
+      padding: 12px 14px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .section-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .section-body {
+      padding: 14px;
+      white-space: pre-wrap;
+      line-height: 1.9;
+      font-size: 15px;
+    }
+    .note {
+      color: var(--sub);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .warn {
+      color: var(--warn);
+      font-weight: 700;
+    }
+    .ok {
+      color: var(--ok);
+      font-weight: 700;
+    }
+    .hidden { display: none; }
+    .topbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: 1fr; }
+      .panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>地域創生ホールディングス KKC 20260120 トークスクリプトアプリ</h1>
+    <p class="lead">
+      必ず要るトークは常時表示、場合分けがある箇所は選択内容に応じて表示を切り替える仕様です。<br>
+      元スクリプトに沿って、受電・架電・留守電・OP分岐・契約種別・支払方法・NG対応まで見られるようにしています。
+    </p>
+
+    <div class="grid">
+      <aside class="panel">
+        <div class="group">
+          <h2>基本情報</h2>
+          <label>担当者名</label>
+          <input id="agentName" type="text" placeholder="例：吉田" />
+
+          <label>お客様名</label>
+          <input id="customerName" type="text" placeholder="例：山田様" />
+
+          <label>プラン名</label>
+          <input id="planName" type="text" placeholder="例：〇〇でんきシンプルプランM" />
+
+          <label>折り返し番号下4桁</label>
+          <input id="phoneLast4" type="text" placeholder="例：1234" />
+        </div>
+
+        <div class="group">
+          <h2>対応種別</h2>
+          <label>通話パターン</label>
+          <select id="callType">
+            <option value="opening">架電（通常）</option>
+            <option value="inbound">受電</option>
+            <option value="voicemail">留守電</option>
+          </select>
+
+          <label>案件区分</label>
+          <select id="caseType">
+            <option value="normal">通常</option>
+            <option value="respot">再点案件（顧客区分：ご入居）</option>
+          </select>
+
+          <label>営業形態</label>
+          <select id="salesType">
+            <option value="normal">通常</option>
+            <option value="telema">テレマ案件（確認不要対象）</option>
+            <option value="tiktok_ts">追加 TUIKOT・TS（確認不要対象）</option>
+          </select>
+
+          <label>契約書・重要事項説明書の確認パターン</label>
+          <select id="docType">
+            <option value="sms">ショートメール・開業案件</option>
+            <option value="paperless">訪問ペーパレス（HF）</option>
+            <option value="other">HP（訪問）など上記以外</option>
+          </select>
+        </div>
+
+        <div class="group">
+          <h2>OP・プラン分岐</h2>
+          <label>OP分岐</label>
+          <select id="opType">
+            <option value="none">なし</option>
+            <option value="support_plan">○○サポートプラン</option>
+            <option value="long_term_discount">長期割オプション(5年プラン)</option>
+            <option value="furusato_12">ふるさとプラン（12か月割）</option>
+            <option value="furusato_sai_nagomi">ふるさと彩/和（彩S/和S）</option>
+            <option value="plan_f">○○プランF（ふるさと〇〇プランではない）</option>
+            <option value="maintenance">設備メンテナンスオプション</option>
+            <option value="claris">クラリス（らくトク・ベネフィット）</option>
+            <option value="rescue">トラブル解決レスキュー</option>
+            <option value="office_pack">オフィス/店舗サポートパック</option>
+            <option value="subsidy_pack">オフィス/店舗補助金サポートパック</option>
+            <option value="food_pack">飲食店サポートパック</option>
+            <option value="special_discount">特別追加（月額）割引</option>
+          </select>
+
+          <label>供給種別</label>
+          <select id="supplyType">
+            <option value="jyuryo">従量</option>
+            <option value="doryoku">動力</option>
+          </select>
+
+          <label>ふるさと彩/和の無料月数</label>
+          <select id="furusatoMonths">
+            <option value="3">3ヶ月（S）</option>
+            <option value="6">6ヶ月</option>
+          </select>
+        </div>
+
+        <div class="group">
+          <h2>契約内容分岐</h2>
+          <label>契約数・内容</label>
+          <select id="contractPattern">
+            <option value="jyuryo_only">従量のみ</option>
+            <option value="jyuryo_doryoku">従量＋低圧(動力)</option>
+            <option value="jyuryo_doryoku_gas">従量＋動力＋ガス</option>
+            <option value="doryoku_only">動力のみ</option>
+          </select>
+
+          <div class="inline-2">
+            <div>
+              <label>契約数表示</label>
+              <input id="contractCount" type="text" placeholder="例：3" />
+            </div>
+            <div>
+              <label>契約年数</label>
+              <input id="contractYears" type="text" placeholder="例：5" value="5" />
+            </div>
+          </div>
+
+          <label class="check"><input id="gasSetDiscount" type="checkbox" /> ガスのセット割あり</label>
+          <label class="check"><input id="gasIncluded" type="checkbox" /> ガス付帯あり</label>
+          <label class="check"><input id="otokugas" type="checkbox" /> おトクガス</label>
+          <label class="check"><input id="officeBlankUnknown" type="checkbox" /> 店舗数・オーナー了承が空白/不明</label>
+        </div>
+
+        <div class="group">
+          <h2>切替・支払・地域</h2>
+          <label>切替パターン</label>
+          <select id="switchPattern">
+            <option value="denki_only">でんきのみ</option>
+            <option value="denki_gas">ガスもセット</option>
+          </select>
+
+          <label>支払方法</label>
+          <select id="paymentType">
+            <option value="bank">口座</option>
+            <option value="credit">クレジットカード</option>
+            <option value="convenience">コンビニ</option>
+          </select>
+
+          <label>初回請求月（マイページ説明用）</label>
+          <input id="firstBillingMonth" type="text" placeholder="例：7月" />
+
+          <label>地域（ガストーク表示判定）</label>
+          <select id="regionType">
+            <option value="tokyo">東京</option>
+            <option value="osaka">大阪</option>
+            <option value="nagoya">名古屋</option>
+            <option value="other">その他</option>
+          </select>
+        </div>
+
+        <div class="group">
+          <h2>NG対応</h2>
+          <label>キャンセル対応</label>
+          <select id="ngType">
+            <option value="none">表示しない</option>
+            <option value="elderly">高齢者</option>
+            <option value="non_elderly">高齢者以外</option>
+            <option value="long_absence_respot">再点案件：長期留守NG</option>
+          </select>
+        </div>
+
+        <div class="btn-row">
+          <button onclick="renderScript()">反映する</button>
+          <button class="secondary" onclick="copyAllText()">全文コピー</button>
+          <button class="light" onclick="resetForm()">初期化</button>
+        </div>
+      </aside>
+
+      <main class="script-area">
+        <div class="topbar">
+          <div class="badge">必須トークは常時表示</div>
+          <div class="badge">場合分けは選択内容で切替</div>
+        </div>
+
+        <div id="sections"></div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>メモ欄</h3>
+            <span class="badge">自由入力</span>
+          </div>
+          <div class="section-body">
+            <textarea placeholder="備考・実際の運用メモ・クライアント指示などをここに記載できます。"></textarea>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    const feePlans = [
+      'でんきシンプルプランM/F',
+      '〇〇でんきビジネスプランM/F',
+      '〇〇でんきパックプランQ,20',
+      '〇〇でんき動力プランM/F'
+    ];
+
+    function v(id) {
+      return document.getElementById(id).value.trim();
+    }
+    function checked(id) {
+      return document.getElementById(id).checked;
+    }
+    function textOr(value, fallback) {
+      return value ? value : fallback;
+    }
+    function isSkipCheckSalesType() {
+      const s = v('salesType');
+      return s === 'telema' || s === 'tiktok_ts';
+    }
+    function hasOfficeFee() {
+      const name = v('planName');
+      return feePlans.some(p => name.includes(p.replaceAll('〇〇', '')) || name.includes(p));
+    }
+
+    function makeSection(title, body, tag = '必須') {
+      return `
+        <section class="section">
+          <div class="section-header">
+            <h3>${title}</h3>
+            <span class="badge">${tag}</span>
+          </div>
+          <div class="section-body">${body}</div>
+        </section>
+      `;
+    }
+
+    function openingScript() {
+      const agent = textOr(v('agentName'), '○○');
+      const customer = textOr(v('customerName'), '○○様');
+      const type = v('callType');
+      if (type === 'inbound') {
+        return `お電話ありがとうございます。わたくし、株式会社地域創生ホールディングスの${agent}と申します。
+お客様情報の確認をいたしますので、お客様の電話番号をお願いいたします。内容確認をいたしますので、少々お待ちくださいませ。確認が取れましたので、続きまして、屋号名とご代表者様のお名前をよろしくお願いいたします。
+続きまして、ご契約者様の生年月日を西暦でお伺いしてもよろしいでしょうか。（有難う御座います！）
+確認が取れました。ご協力ありがとうございました。
+
+ご代表者様以外の場合→申込番号や、屋号名、お名前を伺い、ご代表様に代わって頂く。→＜オープニングトーク/パーミッション＞に戻る。
+
+営業マンの場合（最後）→注意事項などないでしょうか。`;
+      }
+      if (type === 'voicemail') {
+        return `わたくし、先日「〇〇でんき・〇〇ガス」のお申込みをいただきました株式会社地域創生ホールディングスの${agent}と申します。
+最終確認の御連絡いたしました。留守番電話を聞きましたらこちらのフリーダイヤル宛に折り返しご連絡をお願いいたします。`;
+      }
+      return `わたくし、株式会社地域創生ホールディングスの${agent}と申します。先日お申込み頂きました、電気契約について最終確認のお電話を致しました。お電話口はご担当者様（代表者様）${customer}でいらっしゃいますでしょうか。（有難う御座います！）
+お電話口が代表者じゃない場合→先日お申込みいただきました${customer}へお取次ぎいただけますでしょうか？
+この度は、お申込みいただき誠に有難う御座います。
+最終確認のお電話でございますので、只今お時間４～５分程よろしいでしょうか？(有難う御座います！)
+尚、弊社の品質向上のためにお電話の内容を録音させていただいておりますのでご了承下さい。⇒必ずお伝え下さい。
+↑明るくはっきり
+※代表者・担当者以外の場合はNG ・私が担当と仰せの場合はコールを進めて問題ないが、間柄とフルネームをヒアリングし備考に記載する※`;
+    }
+
+    function introScript() {
+      const respot = v('caseType') === 'respot';
+      const base = `まず初めに、今回お申込みいただいているプランは、事業を営んでいる法人様向け電力です。事業者専用のお申込みになり、個人もしくは、廃業しているお客様はお申し込みいただけませんが問題ないでしょうか。また、確認のため、代表者様の生年月日を西暦で確認させていただいております。お伺いしてもよろしいでしょうか。
+知らない→口頭開示し確認認識ないようであればNG
+登録と相違→NG
+（有難う御座います！）`;
+      return respot ? `【再点案件の場合】
+${base}` : base;
+    }
+
+    function intentScript() {
+      const plan = textOr(v('planName'), '○○でんき・○○ガス');
+      return `先日お送りいただいた契約書の内容で、${plan}への提供元変更の手続きを進めさせていただきますが宜しいでしょうか？（有難う御座います！）`;
+    }
+
+    function opScript() {
+      const op = v('opType');
+      const skip = isSkipCheckSalesType();
+      const supply = v('supplyType');
+      const months = v('furusatoMonths');
+      const skipLine = '（テレマの案件の場合は確認不要）確認不要対象案件＜追加 TUIKOT・TS＞';
+
+      switch (op) {
+        case 'support_plan':
+          return `${skip ? skipLine + '\n' : ''}申し込み時に営業マンから○○サポートプランの詳細についての簡単なチラシはもらってますでしょうか？ もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒A4（オレンジ or 緑）か A3（オレンジ or 青）にて、頂いていないでしょうか？ もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内`;
+        case 'long_term_discount':
+          return `申し込み時に営業マンから長期割オプションというオプションサービスについての簡単なチラシはもらってますでしょうか？ もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+こちらのオプションに関しては、ご利用開始月から12ヶ月間(1年間)の基本料金または最低料金が無料となります。 契約期間は60か月間(5年間)の自動更新無しとなりまして、長期割オプションのみを解約することは出来ませんのでご注意ください。`;
+        case 'furusato_12':
+          return `${skip ? skipLine + '\n' : ''}申し込み時に営業マンから
+① 「ふるさとプランというサービスについての簡単なチラシ」
+② 「料金の支払繰延規定の適用についての別紙」 はもらってますでしょうか？
+
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+また、お客様のプランは、一定の基準単価を超える場合、3か月後にスキップ(繰延)し合算請求するフラットプランでございますのでご認識のほどお願いいたします。 詳細につきましてはお渡ししております別冊をご覧ください。
+
+${supply === 'jyuryo' ? '【従量】\nまた、利用開始月から12ヶ月間(1年間)の基本料金または最低料金が無料となります。\n契約期間は60か月間(5年間)の自動更新でございます。\n更新後は再度、12ヶ月間(1年間)の基本料金または最低料金が無料となります。' : '【動力】\nまた、利用開始月から12ヶ月間(1年間)は1㎾あたり100円割引となります。\n契約期間は60か月間(5年間)の自動更新でございます。\n更新後は再度、12ヶ月間(1年間)、1㎾あたり100円割引となります。'}`;
+        case 'furusato_sai_nagomi':
+          return `${skip ? skipLine + '\n' : ''}申し込み時に営業マンから
+① 「ふるさと彩/和プラン（彩S/和S）に関する追加ご説明書」
+② 「料金の支払繰延規定の適用についての別紙」
+③ 「プラン概要チラシ」 はもらってますでしょうか？
+
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+また、お客様のプランは、一定の基準単価を超える場合、3か月後にスキップ(繰延)し合算請求する平準化プランでございますのでご認識のほどお願いいたします。 詳細につきましてはお渡ししております別冊をご覧ください。
+
+${supply === 'jyuryo' ? `【従量】\nまた、利用開始月から${months}ヶ月間の基本料金または最低料金が無料となります。\n契約期間は60か月間(5年間)の自動更新でございます。\n更新後は再度、${months}ヶ月間の基本料金または最低料金が無料となります。` : `【動力】\nまた、利用開始月から${months}ヶ月間は1㎾あたり100円割引となります。\n契約期間は60か月間(5年間)の自動更新でございます。\n更新後は再度、${months}ヶ月間、1㎾あたり100円割引となります。`}
+
+※ふるさとS 3か月無料
+※ふるさと 6か月無料`;
+        case 'plan_f':
+          return `${skip ? skipLine + '\n' : ''}申し込み時に営業マンから 「料金の支払繰延規定の適用についての別紙」 はもらってますでしょうか？
+
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+また、お客様のプランは、一定の基準単価を超える場合、3か月後にスキップ(繰延)し合算請求する平準化プランでございますのでご認識のほどお願いいたします。 詳細につきましてはお渡ししております別冊をご覧ください。`;
+        case 'maintenance':
+          return `申し込み時に営業マンから設備メンテナンスオプションというオプションサービスについての簡単なチラシはもらってますでしょうか？ もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+こちらのオプションに関しては、ご利用開始月から3ヶ月間の基本料金が無料となります。`;
+        case 'claris':
+          return `申し込み時に営業マンからクラリス（らくトク・ベネフィット）という福利厚生についての簡単なチラシはもらってますでしょうか？ もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+サービスのご利用については、翌月1日より開始となり、利用開始日から最大3ヶ月間無料期間となります。`;
+        case 'rescue':
+          return `申し込み時に営業マンからサポートパックのチラシはもらってますでしょうか？
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内`;
+        case 'office_pack':
+          return `申し込み時に営業マンからサポートパックのチラシはもらってますでしょうか？
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内`;
+        case 'subsidy_pack':
+          return `申し込み時に営業マンからサポートパックのチラシはもらってますでしょうか？
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内`;
+        case 'food_pack':
+          return `申し込み時に営業マンからサポートパックのチラシはもらってますでしょうか？
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内`;
+        case 'special_discount':
+          return `申し込み時に営業マンからOPに関する書面はもらってますでしょうか？
+もらっている場合⇒有難う御座います。トーク進める
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+↑ゆっくり、ハキハキと`;
+        default:
+          return '該当するOP分岐はありません。';
+      }
+    }
+
+    function docsScript() {
+      const type = v('docType');
+      let body = '';
+      if (type === 'sms') {
+        body = `1 ショートメール、開業案件の場合 ⇒＜追加 TUIKOT・TS は ショートメール到着確認を確認する＞ お客様の携帯番号あてに届くショートメールに、「重要事項説明書」をご覧いただけるホームページのご案内（URL）をお送りしております。 そのショートメールはお手元に届いておりますでしょうか。
+〇ショートメール記載のURLから、重要事項説明書と料金表をご確認お願いいたします。
+×おそれいります、一度確認させていただきます。
+（一旦保留）作業①エリー/トニーで送信をする。
+②保留解除 →届きましたでしょうか？
+③⇒契約確認のフラグは「見込み」にする
+※届かないという申告の場合には、企画事務局の方へ書面発送に変えるか相談すること。`;
+      } else if (type === 'paperless') {
+        body = `2 訪問ペーパレスの場合（HF）⇒ショートメール到着確認を確認する(➀のトーク)
+＋
+「別途お渡ししております、契約書 兼 重要事項説明書のお控えはお手元にございますでしょうか。`;
+      } else {
+        body = `3 HP（訪問）など上記以外の場合 ⇒契約書の控え、重要事項説明書はお手元に御座いますでしょうか。（有難う御座います！） また、契約書の控えについてですが、担当者より 「右半分が空白の状態でお渡しなどはされていないでしょうか」（ありがとうございます。）`;
+      }
+      return `${body}
+
+（共通）⇒約款（やっかん）はHPでご確認いただき、契約書の控え、重要事項説明書は大切に保管いただきますようお願いいたします。
+↑ゆっくり、ハキハキと`;
+    }
+
+    function ownerScript() {
+      if (checked('officeBlankUnknown')) {
+        return `空白/わからない場合は契約確認NGでお願いいたします。
+※使用場所情報の詳細欄に該当
+
+<span class="warn">現在の選択：店舗数・オーナー了承が空白/不明のため契約確認NG</span>`;
+      }
+      const count = textOr(v('contractCount'), '●');
+      const p = v('contractPattern');
+      if (p === 'jyuryo_only') {
+        return `続きまして、今回、お申込の契約数は従量が${count}契約で、全てオーナー様ご了承の上でのお申込でお間違いないでしょうか？(有難う御座います！)`;
+      }
+      if (p === 'jyuryo_doryoku') {
+        return `続きまして、お申込の契約数は従量＋低圧(動力)の合計${count}契約、全てオーナー様ご了承の上でのお申込でお間違いないでしょうか？(有難う御座います！)`;
+      }
+      if (p === 'jyuryo_doryoku_gas') {
+        return `続きまして、お申込の契約数は従量＋低圧(動力)+ガスの合計${count}契約、全てオーナー様ご了承の上でのお申込でお間違いないでしょうか？(有難う御座います！)
+${checked('gasSetDiscount') ? 'また、電気の契約を解約するとガスのセット割が適用されなくなるので、ご注意ください。' : ''}`;
+      }
+      return `続きまして、お申込の契約数は動力が${count}契約で、全てオーナー様ご了承の上でのお申込でお間違いないでしょうか？(有難う御座います！)`;
+    }
+
+    function providerScript() {
+      return `現在ご利用中の電力会社はご解約となり、電力会社が「株式会社地域創生ホールディングス」に切替わります
+${checked('gasIncluded') ? '\n【ガス付帯ある場合共通】\nまた〇〇ガスは、ガス小売事業者の【株式会社ファミリーネット・ジャパン/株式会社サイサン】から供給されます。' : ''}`;
+    }
+
+    function stableSupplyScript() {
+      const skip = isSkipCheckSalesType();
+      return `${skip ? '（テレマの案件の場合は確認不要）確認不要対象案件＜追加 TUIKOT・TS＞\n' : ''}安定供給維持費の単価変更に関する、別紙はお受け取りいただけましたでしょうか。
+もらっている場合⇒申し込み確認書と重要事項説明書とともに大切に保管ください。
+もらってない場合⇒契約ＮＧ⇒販売店から折り返し案内
+
+【電源調達調整・安定供給維持費】
+○○でんきに関しては電源調達調整費と安定供給維持費という項目があります。
+お客様がご利用いただく電気の調達価格が基準値を上回る場合には追加でのご請求となりますが、
+電源調達費調整費は、基準値を下回る場合にはお客様に追加で還元させていただいております。
+また、安定供給維持費は2024年4月から施行される国が定めた容量拠出金制度（ようりょうきょしゅつきんせいど）に伴い、お客様にご請求させていただきます。 こちらの制度は電気の安定供給を目的として、私共を含む全ての小売り電気事業者または送配電事業者が対象となりますのでご留意ください。`;
+    }
+
+    function penaltyScript() {
+      const years = textOr(v('contractYears'), '●');
+      const gasIncluded = checked('gasIncluded');
+      const op = v('opType');
+      const feeLine = hasOfficeFee() ? '【事務手数料は（税込）3,850円となり、１地点毎ごとに掛かります。】' : '【プランにより事務手数料案内不要】';
+      let extra = '';
+      if (gasIncluded && !checked('otokugas')) {
+        extra += '【ガスもセットの場合】\n※おトクガスの場合⇒セット・単体の2パターンどちらであってもガスの事務手数料の概念はない為案内不要\n\n';
+      }
+      if (op === 'long_term_discount') {
+        extra += '【長期割オプション付帯の場合】\n長期割オプションを途中解約されますと、最大「12ヶ月分の基本料金」+「電気契約の違約金」がキャンセル料として発生いたしますのでご了承くださいませ。1年未満での解約は「利用された月数分の基本料金」+「電気契約の違約金」となります。\n※違約金が発生しないのは最短72か月目（6年目）となります。\n\n';
+      }
+      if (op === 'furusato_12' || op === 'furusato_sai_nagomi') {
+        extra += '【ふるさと〇〇プランの場合】\nプランを更新月外で解約されますと、5年ごとの「契約期間中における実質値引き額」+「電気契約の違約金」がキャンセル料として発生いたしますのでご了承くださいませ。\n\n';
+      }
+      if (op === 'special_discount') {
+        extra += '【特別追加（月額）割引付帯に伴う契約解除料】\n特別追加（月額）割引が付帯されておりますので、更新月以外でやめる場合、電気の違約金とは別に、（不課税）6,000円の料金が発生いたします。\n';
+      }
+      return `また、今回のプランは${years}年間の自動更新の契約となっており、更新月以外でやめる場合は1契約ごとに違約金が発生いたしますのでご認識お願いいたします。
+****（注意）事務手数料がかかるプランの確認****
+${feeLine}
+
+${extra || '追加の違約金案内はありません。'}`;
+    }
+
+    function switchScript() {
+      return v('switchPattern') === 'denki_only'
+        ? `続いて切り替えのタイミングとなりますが、このお電話が終わり次第、切り替え手続きに入らせていただきます。
+最短で次回検針日で切り替わりますのでご認識お願いいたします。`
+        : `続いて切り替えのタイミングとなりますが、このお電話が終わり次第○○電力、○○ガスから順々に切り替え手続きに入らせていただきます。最短で次回検針日での切替を予定しておりますが、電気とガスの検針日は同一の日付ではない為、切替のお日にちは異なりますのでご認識お願いいたします。`;
+    }
+
+    function invoiceTimingScript() {
+      return `切替のお日にちが決まりましたら、1週間から10日前後で、ご契約ごとの切替日の記載した「申込確認書」が郵送で届きます。平均1.2か月後の検針日から、切り替わりますので、それまでは今までの電力会社から請求が届きます。
+約3か月後から地域創生HDの請求となりますのでご認識をお願いします。
+もちろんですが今の電力会社と料金が重なる（or 重複する）ことはございませんのでご安心ください。
+※簡易テレマのみ 別紙：簡易テレマ(支払い方法の確認)に移動※`;
+    }
+
+    function paymentScript() {
+      const p = v('paymentType');
+      if (p === 'bank') {
+        return `今回口座振替でお申し込みいただいておりますが、記載情報に不備なく、スムーズに進んだ場合でも1〜2ヶ月お時間が掛かるケースがございます。登録が完了するまでの間はコンビニ払いの請求書をお送り致しますので、請求書でのお支払いをお願いいたします。`;
+      }
+      if (p === 'credit') {
+        return `クレジットカードの情報のご記載をしていただく書面をお送りいたします。書面が届いたらご記入いただき、ご返送の程よろしくお願いいたします。登録が完了するまでの間はコンビニ払いの請求書をお送り致しますので、請求書でのお支払いをお願いいたします。`;
+      }
+      return `今回コンビニ支払いでお申込みいただいておりますが、請求書が毎月20日頃に届きまして、一枚550円の発行手数料がかかります。請求書がお手元に届きましたら、お近くのコンビニでお支払いをお願いいたします。`;
+    }
+
+    function myPageScript() {
+      const month = textOr(v('firstBillingMonth'), '〇月');
+      return `また、HP上に、月々の請求金額の内訳、使用量をご確認できるお客様専用のマイページを設けており、お申し込み完了後、ご利用方法を記載した書類をIDと一緒にお送りいたしますのでお手元に届きましたら大切に保管をお願いします。切り替えがスムーズに進んだ場合、初回の請求月は、最短で3か月後の${month}になります。
+毎月23日前後にマイページへ請求情報が更新されますのでご確認の際はパソコン、スマホからご覧ください。
+
+※処理時の注意※
+＜確認事項(契約確認コール時)最終チェック項目＞
+・再点・新設・追加・簡易テレマ・併売
+・重要事項説明書等 ショートメール`;
+    }
+
+    function closingScript() {
+      const region = v('regionType');
+      const agent = textOr(v('agentName'), '○○');
+      const last4 = textOr(v('phoneLast4'), '○○○○');
+      const gasTalk = ['tokyo', 'osaka', 'nagoya'].includes(region)
+        ? '【ガストーク】※東京、大阪、名古屋のみトーク展開（※都市ガスのみ）\n今後追加で電気やガスの契約がございましたらセット割引も可能ですので、お気軽にご連絡ください。\n\n'
+        : '';
+      return `${gasTalk}確認は以上でございますが、何かご不明点などはございますか？（有難う御座います！）
+
+今後、お問い合わせをご希望の場合は後日お送りさせていただきます、書面にも記載があります、弊社カスタマーセンターまでどうぞお気軽にお電話ください。
+最後に、折り返しさせていただく場合のお電話番号はこちらの、下4ケタ${last4}で終わるお電話番号でよろしいでしょうか。
+本日は貴重なお時間をいただきありがとうございました。本日のお手続きは${agent}が承りました。
+今後ともよろしくお願いいたします。失礼致します。
+
+【質問された場合】
+地域創生ホールディングスカスタマーセンターの電話番号は、後日お送りいたします書面にも記載されているのですが、今口頭でお伝えしてもよろしいでしょうか。（有り難う御座います！）
+地域創生ホールディングスカスタマーセンターのお電話番号は「0570-099-959」でございます。
+窓口時間は、平日の午前10時から18時までとなっており、日曜、祝日、年末年始はお休みをいただいております。`;
+    }
+
+    function ngScript() {
+      const type = v('ngType');
+      if (type === 'none') return '';
+      if (type === 'elderly') {
+        return `お客様：キャンセル希望(○○聞いてなかった〜.○○だったらキャンセルする)
+
+【高齢者の場合】
+畏まりました。そうしましたら私、○○にてこのお電話で○○でんきのキャンセルを受け付けさせていただきます。なお、契約前の為、費用は発生しませんので、ご安心ください。`;
+      }
+      if (type === 'non_elderly') {
+        return `お客様：キャンセル希望(○○聞いてなかった〜.○○だったらキャンセルする)
+
+【高齢者以外の場合】
+畏まりました。そうしましたら私、○○にてこのお電話で○○でんきのキャンセルを受け付けさせていただきます。
+キャンセルにつきまして、営業担当からのご連絡等は必要でございますか？
+ーはい
+かしこまりました。後ほど営業担当からご連絡致しますのでお待ちください。
+ーいいえ
+かしこまりました。わたくしの方でキャンセルを承ります。
+（キャンセルした旨の書類は送ることができるが、聞かれた場合だけで良い）
+
+リードタイム：N＋1日 or 2日（土日を除く）
+※リードタイムは聞かれた場合のみ案内して下さい。
+※折り返し不承の場合は、そのままキャンセルを承り、備考欄へ記載+NG共有メールにその旨を記載し共有をお願い致します。`;
+      }
+      return `【再点案件の場合】
+※顧客区分「ご入居」
+長期留守NGの時の対応：依頼管理作成→キャンセル書面発送「備考：再点」
+（判別不可となるため、依頼管理の備考は「再点」以外入力は行わないでください）`;
+    }
+
+    function renderScript() {
+      const sections = [];
+      sections.push(makeSection('オープニングトーク / パーミッション', openingScript(), '必須'));
+      sections.push(makeSection('冒頭説明', introScript(), '必須'));
+      sections.push(makeSection('申し込み意思確認', intentScript(), '必須'));
+      sections.push(makeSection('OPについて場合分け', opScript(), '分岐'));
+      sections.push(makeSection('契約書控え・約款・重要事項説明書の確認', docsScript(), '必須'));
+      sections.push(makeSection('店舗数・オーナー了承確認', ownerScript(), '必須'));
+      sections.push(makeSection('サービス提供会社名変更・電力提供会社変更', providerScript(), '必須'));
+      sections.push(makeSection('電源調達調整と安定供給維持費', stableSupplyScript(), '必須'));
+      sections.push(makeSection('契約期間・違約金について', penaltyScript(), '必須'));
+      sections.push(makeSection('切り替え・請求タイミング', switchScript(), '必須'));
+      sections.push(makeSection('申込確認書・請求開始時期', invoiceTimingScript(), '必須'));
+      sections.push(makeSection('支払い方法について', paymentScript(), '必須'));
+      sections.push(makeSection('マイページ説明', myPageScript(), '必須'));
+      sections.push(makeSection('クローズトーク', closingScript(), '必須'));
+      const ng = ngScript();
+      if (ng) sections.push(makeSection('契約確認コールNGについて', ng, 'NG分岐'));
+      document.getElementById('sections').innerHTML = sections.join('');
+    }
+
+    function copyAllText() {
+      const temp = document.createElement('div');
+      temp.innerHTML = document.getElementById('sections').innerHTML;
+      const text = temp.innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('表示中の全文をコピーしました。');
+      }).catch(() => {
+        alert('コピーに失敗しました。ブラウザの権限をご確認ください。');
+      });
+    }
+
+    function resetForm() {
+      document.querySelectorAll('input[type="text"], input[type="number"]').forEach(el => el.value = '');
+      document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+      document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+      document.getElementById('contractYears').value = '5';
+      document.getElementById('furusatoMonths').value = '3';
+      renderScript();
+    }
+
+    renderScript();
+  </script>
+</body>
+</html>
